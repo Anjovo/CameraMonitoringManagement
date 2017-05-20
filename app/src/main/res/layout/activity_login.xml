@@ -1,0 +1,211 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1.1"
+        android:background="@mipmap/logo_up_bg"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="@dimen/y160"
+            android:layout_height="@dimen/y170"
+            android:background="@mipmap/logo"
+            android:gravity="center">
+
+            <com.android.zhsl.views.RadiationView
+                android:id="@+id/bg"
+                android:layout_width="@dimen/y160"
+                android:layout_height="@dimen/y170">
+
+            </com.android.zhsl.views.RadiationView>
+
+            <com.ltf.mytoolslibrary.viewbase.views.CircleImageView
+                android:id="@+id/main_person_touxiang"
+                android:layout_width="@dimen/y110"
+                android:layout_height="@dimen/y120"
+                android:layout_centerInParent="true"
+                android:src="@mipmap/logo_ico"></com.ltf.mytoolslibrary.viewbase.views.CircleImageView>
+
+
+        </RelativeLayout>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/main_person_touxiang"
+            android:layout_gravity="center"
+            android:layout_marginTop="@dimen/y30"
+            android:gravity="center"
+            android:text="智慧水利"
+            android:textColor="@color/white"
+            android:textSize="@dimen/y22" />
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:gravity="center|top"
+        android:background="@color/white"
+        android:scrollbars="none">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center|top"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:id="@+id/rl_1"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y32"
+                android:layout_below="@+id/iv_1"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/x55"
+                android:layout_marginRight="@dimen/x75"
+                android:layout_marginTop="@dimen/y40">
+
+                <com.ltf.mytoolslibrary.viewbase.andreabaccega.widget.FormEditText
+                    android:id="@+id/activity_login_server"
+                    style="@style/text_msg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/y52"
+                    android:background="@null"
+                    android:drawablePadding="13dp"
+                    android:gravity="center|left"
+                    android:hint="请输入服务器IP"
+                    android:inputType="text"
+                    android:singleLine="true" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/x1"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="@dimen/y52"
+                    android:background="@color/bg" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y32"
+                android:layout_below="@+id/rl_1"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/x55"
+                android:layout_marginRight="@dimen/x75"
+                android:layout_marginTop="@dimen/y40">
+
+
+                <com.ltf.mytoolslibrary.viewbase.andreabaccega.widget.FormEditText
+                    android:id="@+id/activity_login_port"
+                    style="@style/text_msg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/y52"
+                    android:background="@null"
+                    android:drawablePadding="10dp"
+                    android:gravity="center|left"
+                    android:hint="请输入服务器端口号"
+                    android:inputType="number"
+                    android:maxLength="18"
+                    android:singleLine="true" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/x1"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="@dimen/y52"
+                    android:background="@color/bg" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y32"
+                android:layout_below="@+id/rl_1"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/x55"
+                android:layout_marginRight="@dimen/x75"
+                android:layout_marginTop="@dimen/y40">
+
+
+                <com.ltf.mytoolslibrary.viewbase.andreabaccega.widget.FormEditText
+                    android:id="@+id/activity_login_user"
+                    style="@style/text_msg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/y52"
+                    android:background="@null"
+                    android:drawablePadding="10dp"
+                    android:gravity="center|left"
+                    android:hint="请输入用户名"
+                    android:inputType="text"
+                    android:maxLength="18"
+                    android:singleLine="true" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/x1"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="@dimen/y52"
+                    android:background="@color/bg" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y32"
+                android:layout_below="@+id/rl_1"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="@dimen/x55"
+                android:layout_marginRight="@dimen/x75"
+                android:layout_marginTop="@dimen/y40">
+
+
+                <com.ltf.mytoolslibrary.viewbase.andreabaccega.widget.FormEditText
+                    android:id="@+id/activity_login_password"
+                    style="@style/text_msg"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_marginLeft="@dimen/y52"
+                    android:background="@null"
+                    android:drawablePadding="10dp"
+                    android:gravity="center|left"
+                    android:hint="请输入密码(不小于6位)"
+                    android:inputType="textPassword"
+                    android:maxLength="18"
+                    android:password="true"
+                    android:singleLine="true" />
+
+                <ImageView
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/x1"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginLeft="@dimen/y52"
+                    android:background="@color/bg" />
+            </RelativeLayout>
+
+            <Button
+                android:id="@+id/activity_login_login"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/y50"
+                android:layout_gravity="center"
+                android:layout_marginLeft="@dimen/y90"
+                android:layout_marginRight="@dimen/y80"
+                android:layout_marginTop="@dimen/y60"
+                android:background="@drawable/button_bg_login"
+                android:clickable="true"
+                android:onClick="onLoginClick"
+                android:text="登录"
+                android:textColor="@color/white"
+                android:textSize="@dimen/y22" />
+
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
