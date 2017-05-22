@@ -190,7 +190,7 @@ public class ActivityVideoPay extends ActivityTitleBase{
     }
 
     private void back(){
-        StopRealPlay();
+//        StopRealPlay();
         AppManager.getAppManager().finishActivity(ActivityVideoPay.this);
     }
 
