@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 
+import com.android.zhsl.MainActivity;
 import com.android.zhsl.R;
 import com.android.zhsl.bean.VideoDataBean;
 import com.baidu.location.BDLocation;
@@ -475,7 +476,7 @@ public class ActivityMap extends ActivityTitleBase{
                 popupWindow.dismiss();
                 if("1".equals(views.getGrandson().get(nowPosition).getIsSelect())){
 
-                    isStartVideo = true;
+                    MainActivity.isStartVideo = true;
                     isStartVideos = true;
                     Bundle bun = new Bundle();
                     bun.putString("channelId",views.getGrandson().get(nowPosition).getChannelId());

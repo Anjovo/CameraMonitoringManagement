@@ -2,6 +2,7 @@ package com.android.zhsl.app;
 
 import android.util.Log;
 
+import com.android.zhsl.MainActivity;
 import com.baidu.mapapi.SDKInitializer;
 import com.dh.DpsdkCore.IDpsdkCore;
 import com.dh.DpsdkCore.Return_Value_Info_t;
@@ -46,6 +47,7 @@ public class MyAppLication extends ApplicationBase{
         super.onCreate();
         _instance = this;
         SwipeBackActivity.setStupInit(this,1546792512135L);
+        MainActivity.isStartVideo = false;
         //在使用SDK各组件之前初始化context信息，传入ApplicationContext
         //注意该方法要再setContentView方法之前实现
         SDKInitializer.initialize(getApplicationContext());
