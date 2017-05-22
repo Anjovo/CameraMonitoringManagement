@@ -25,6 +25,7 @@ import com.baidu.mapapi.map.BaiduMap;
 import com.baidu.mapapi.map.BitmapDescriptor;
 import com.baidu.mapapi.map.BitmapDescriptorFactory;
 import com.baidu.mapapi.map.InfoWindow;
+import com.baidu.mapapi.map.MapPoi;
 import com.baidu.mapapi.map.MapStatus;
 import com.baidu.mapapi.map.MapStatusUpdate;
 import com.baidu.mapapi.map.MapStatusUpdateFactory;
@@ -105,6 +106,24 @@ public class ActivityMap extends ActivityTitleBase{
             @Override
             public void onMapStatusChangeFinish(MapStatus mapStatus) {
                 updateMap(mapStatus);
+            }
+        });
+
+        mBaiduMap.setOnMapClickListener(new BaiduMap.OnMapClickListener()
+        {
+
+            @Override
+            public boolean onMapPoiClick(MapPoi arg0)
+            {
+                return false;
+            }
+
+            @Override
+            public void onMapClick(LatLng arg0)
+            {
+                viegroup.setVisibility(View.GONE);
+                mBaiduMap.hideInfoWindow();
+
             }
         });
     }
