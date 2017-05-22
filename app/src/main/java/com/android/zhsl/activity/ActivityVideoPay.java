@@ -128,7 +128,7 @@ public class ActivityVideoPay extends ActivityTitleBase{
     private void startPaly(fMediaDataCallback fm){
         if(!StartRealPlay()){
             Log.e("xss", "StartRealPlay failed!");
-            Toast.makeText(getApplicationContext(), "Open video failed!", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getApplicationContext(), "视频预览失败!", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -150,11 +150,11 @@ public class ActivityVideoPay extends ActivityTitleBase{
             if(ret == 0){
                 m_nSeq = retVal.nReturnValue;
                 Log.e("xss DPSDK_success!",ret+"");
-                Toast.makeText(getApplicationContext(), "Open video success!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "视频预览成功,请稍后!", Toast.LENGTH_SHORT).show();
             }else{
                 StopRealPlay();
                 Log.e("xss DPSDK_failed!",ret+"");
-                Toast.makeText(getApplicationContext(), "Open video failed!", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "视频预览失败!", Toast.LENGTH_SHORT).show();
             }
         }catch(Exception e){
             Log.e("xss", e.toString());
@@ -190,7 +190,15 @@ public class ActivityVideoPay extends ActivityTitleBase{
     }
 
     private void back(){
-//        StopRealPlay();
+        int ret = IDpsdkCore.DPSDK_CloseRealStreamBySeq(m_pDLLHandle, m_nSeq, mTimeOut);
+        if(ret == 0){
+            Log.e("xss","DPSDK_CloseRealStreamByCameraId success!");
+            Toast.makeText(getApplicationContext(), "Close video success!", Toast.LENGTH_SHORT).show();
+        }else{
+            Log.e("xss","DPSDK_CloseRealStreamByCameraId failed! ret = " + ret);
+            Toast.makeText(getApplicationContext(), "Close video failed!", Toast.LENGTH_SHORT).show();
+        }
+        StopRealPlay();
         AppManager.getAppManager().finishActivity(ActivityVideoPay.this);
     }
 
@@ -677,13 +685,11 @@ public class ActivityVideoPay extends ActivityTitleBase{
         this.setIntent(intent);
     }
 
-    public void StopRealPlay()
-    {
+    public void StopRealPlay(){
         try {
             IPlaySDK.PLAYStopSoundShare(m_nPort);
             IPlaySDK.PLAYStop(m_nPort);
             IPlaySDK.PLAYCloseStream(m_nPort);
-
         } catch (Exception e) {
             e.printStackTrace();
         }

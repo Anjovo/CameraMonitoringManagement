@@ -73,7 +73,6 @@ public class MainActivity extends ActivityTitleBase {
         L.d(TAG,"-----------------------initTitle()-----------------");
     }
 
-    public static boolean isStartVideo = false;
     @Override
     public void onTitleRightSerchBtnClick() {
         super.onTitleRightSerchBtnClick();
@@ -337,13 +336,7 @@ public class MainActivity extends ActivityTitleBase {
                 groupHolder.pic = (ImageView) view.findViewById(R.id.pic);
                 groupHolder.xiala = (ImageView) view.findViewById(R.id.xiala);
 
-//                groupHolder.name.setTextSize(AutoUtils.getDisplayHeightValue(8));
-//                groupHolder.pic.setLayoutParams(new LinearLayout.LayoutParams(AutoUtils.getDisplayWidthValue(40),AutoUtils.getDisplayHeightValue(40)));
-//                groupHolder.xiala.setLayoutParams(new LinearLayout.LayoutParams(AutoUtils.getDisplayWidthValue(25),AutoUtils.getDisplayHeightValue(25)));
-
-                if(!isStartVideo)
-                    AutoUtils.auto(groupHolder.name);
-
+                AutoUtils.auto(view);
                 view.setTag(groupHolder);
             }
 
@@ -351,6 +344,7 @@ public class MainActivity extends ActivityTitleBase {
             groupHolder.pic.setImageResource(mVideoDataBean.get(groupPosition).getGroupPic());
             groupHolder.xiala.setVisibility(View.VISIBLE);
             groupHolder.xiala.setImageResource(mVideoDataBean.get(groupPosition).getJiantouPic());
+
             return view;
         }
 
@@ -383,7 +377,6 @@ public class MainActivity extends ActivityTitleBase {
                 @Override
                 public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long
                         l) {
-                    isStartVideo = true;
                     Bundle bun = new Bundle();
                     bun.putString("channelId",college.getChild().get(i).getGrandson().get(i1).getChannelId());
                     bun.putString("channelName",college.getChild().get(i).getGrandson().get(i1).getChannelName());
@@ -529,12 +522,7 @@ public class MainActivity extends ActivityTitleBase {
                 groupHolder.pic = (ImageView) view.findViewById(R.id.pic);
                 groupHolder.xiala = (ImageView) view.findViewById(R.id.xiala);
 
-//                groupHolder.name.setTextSize(AutoUtils.getDisplayHeightValue(6));
-//                groupHolder.pic.setLayoutParams(new LinearLayout.LayoutParams(AutoUtils.getDisplayWidthValue(30),AutoUtils.getDisplayHeightValue(30)));
-//                groupHolder.xiala.setLayoutParams(new LinearLayout.LayoutParams(AutoUtils.getDisplayWidthValue(25),AutoUtils.getDisplayHeightValue(25)));
-                if(!isStartVideo)
-                     AutoUtils.auto(groupHolder.name);
-
+                AutoUtils.auto(view);
                 view.setTag(groupHolder);
             }
 
@@ -542,6 +530,7 @@ public class MainActivity extends ActivityTitleBase {
             groupHolder.pic.setImageResource(college.getChild().get(groupPosition).getChildPic());
             groupHolder.xiala.setImageResource(college.getChild().get(groupPosition).getJiantouPic());
             groupHolder.xiala.setVisibility(View.VISIBLE);
+
             return view;
         }
 
@@ -560,12 +549,7 @@ public class MainActivity extends ActivityTitleBase {
                 childholder.pic = (ImageView) view.findViewById(R.id.pic);
                 childholder.xiala = (ImageView) view.findViewById(R.id.xiala);
 
-//                childholder.name.setTextSize(AutoUtils.getDisplayHeightValue(6));
-//                childholder.pic.setLayoutParams(new LinearLayout.LayoutParams(AutoUtils.getDisplayWidthValue(30),AutoUtils.getDisplayHeightValue(30)));
-//                childholder.xiala.setLayoutParams(new LinearLayout.LayoutParams(AutoUtils.getDisplayWidthValue(25),AutoUtils.getDisplayHeightValue(25)));
-                if(!isStartVideo)
-                     AutoUtils.auto(childholder.name);
-
+                AutoUtils.auto(view);
                 view.setTag(childholder);
             }
 
@@ -576,6 +560,7 @@ public class MainActivity extends ActivityTitleBase {
             childholder.xiala.setVisibility(View.GONE);
 
 //            view.setPadding(10,0,0,0);
+
             return view;
         }
 

@@ -24,16 +24,16 @@
         android:textColor="@color/text_666"
         android:textSize="@dimen/y20" />
 
-    <ListView
+    <com.ltf.mytoolslibrary.viewbase.views.MyListView
         android:id="@+id/listview12"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/y250"
+        android:layout_height="wrap_content"
         android:background="@color/white"
         android:divider="#00000000"
         android:dividerHeight="0dip"
         android:listSelector="@android:color/transparent"
         android:padding="@dimen/y10"
-        android:scrollbars="none"></ListView>
+        android:scrollbars="none"></com.ltf.mytoolslibrary.viewbase.views.MyListView>
 
     <LinearLayout
         android:layout_width="match_parent"

@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Handler;
 
 import com.android.zhsl.R;
+import com.android.zhsl.utils.LoginUtils;
 import com.ltf.mytoolslibrary.viewbase.base.ActivityTitleBase;
 import com.ltf.mytoolslibrary.viewbase.utils.AppManager;
 
@@ -20,9 +21,27 @@ public class ActivityWelcome extends ActivityTitleBase{
         mHandler.postDelayed(new Runnable() {
             @Override
             public void run() {
-                gotoLogin();
+                gotoWhere();
             }
         }, 1000);
+    }
+
+    private void gotoWhere(){
+        if(LoginUtils.getLoginUtils().isLogin(this)){//登录过便自动登录
+            String[] str = LoginUtils.getLoginUtils().getEditTextContent(this);
+            LoginUtils.getLoginUtils().login(null, str[0], str[1], str[2], str[3], new LoginUtils.onBackLoginResult() {
+                @Override
+                public void onBackLoginResultLisnner(boolean isLoginSuccessd) {
+                    if(isLoginSuccessd){
+                        LoginUtils.getLoginUtils().jumpToItemListActivity(ActivityWelcome.this);
+                    }else{
+                        gotoLogin();
+                    }
+                }
+            });
+        }else{
+            gotoLogin();
+        }
     }
 
     private void gotoLogin(){

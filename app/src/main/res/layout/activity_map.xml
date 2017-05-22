@@ -15,7 +15,7 @@
         android:layout_height="wrap_content"
         android:background="#44444444"
         android:padding="@dimen/y10"
-        android:text="通道"
+        android:text="定位中..."
         android:gravity="center|left"
         android:textColor="@color/white"
         android:textSize="@dimen/y20"/>
