@@ -73,6 +73,7 @@ public class MainActivity extends ActivityTitleBase {
         L.d(TAG,"-----------------------initTitle()-----------------");
     }
 
+    public static boolean isStartVideo = false;
     @Override
     public void onTitleRightSerchBtnClick() {
         super.onTitleRightSerchBtnClick();
@@ -340,7 +341,8 @@ public class MainActivity extends ActivityTitleBase {
 //                groupHolder.pic.setLayoutParams(new LinearLayout.LayoutParams(AutoUtils.getDisplayWidthValue(40),AutoUtils.getDisplayHeightValue(40)));
 //                groupHolder.xiala.setLayoutParams(new LinearLayout.LayoutParams(AutoUtils.getDisplayWidthValue(25),AutoUtils.getDisplayHeightValue(25)));
 
-                AutoUtils.autoSize(groupHolder.name);
+                if(!isStartVideo)
+                    AutoUtils.auto(groupHolder.name);
 
                 view.setTag(groupHolder);
             }
@@ -381,6 +383,7 @@ public class MainActivity extends ActivityTitleBase {
                 @Override
                 public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long
                         l) {
+                    isStartVideo = true;
                     Bundle bun = new Bundle();
                     bun.putString("channelId",college.getChild().get(i).getGrandson().get(i1).getChannelId());
                     bun.putString("channelName",college.getChild().get(i).getGrandson().get(i1).getChannelName());
@@ -529,8 +532,8 @@ public class MainActivity extends ActivityTitleBase {
 //                groupHolder.name.setTextSize(AutoUtils.getDisplayHeightValue(6));
 //                groupHolder.pic.setLayoutParams(new LinearLayout.LayoutParams(AutoUtils.getDisplayWidthValue(30),AutoUtils.getDisplayHeightValue(30)));
 //                groupHolder.xiala.setLayoutParams(new LinearLayout.LayoutParams(AutoUtils.getDisplayWidthValue(25),AutoUtils.getDisplayHeightValue(25)));
-
-                AutoUtils.autoSize(groupHolder.name);
+                if(!isStartVideo)
+                     AutoUtils.auto(groupHolder.name);
 
                 view.setTag(groupHolder);
             }
@@ -560,8 +563,8 @@ public class MainActivity extends ActivityTitleBase {
 //                childholder.name.setTextSize(AutoUtils.getDisplayHeightValue(6));
 //                childholder.pic.setLayoutParams(new LinearLayout.LayoutParams(AutoUtils.getDisplayWidthValue(30),AutoUtils.getDisplayHeightValue(30)));
 //                childholder.xiala.setLayoutParams(new LinearLayout.LayoutParams(AutoUtils.getDisplayWidthValue(25),AutoUtils.getDisplayHeightValue(25)));
-
-                AutoUtils.autoSize(childholder.name);
+                if(!isStartVideo)
+                     AutoUtils.auto(childholder.name);
 
                 view.setTag(childholder);
             }

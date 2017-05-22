@@ -52,6 +52,8 @@ import com.ltf.mytoolslibrary.viewbase.views.CatLoadingView;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.android.zhsl.MainActivity.isStartVideo;
+
 /**
  * 作者：李堂飞 on 2017/5/18 13:20
  * 邮箱：litangfei119@qq.com
@@ -134,49 +136,57 @@ public class ActivityMap extends ActivityTitleBase{
 
             @Override
             public void onMapStatusChangeFinish(MapStatus mapStatus) {
-//                mBaiduMap.clear();
-                LatLng mCenterLatLng = mapStatus.target;
+                updateMap(mapStatus);
+            }
+        });
+    }
 
-                double lat = mCenterLatLng.latitude;
-                double lng = mCenterLatLng.longitude;
-                Log.i("中心点坐标", lat+","+lng);
+    /***
+     * 更新地图上的显示
+     * @param mapStatus
+     */
+    private void updateMap(MapStatus mapStatus) {
+        mBaiduMap.clear();
+        LatLng mCenterLatLng = mapStatus.target;
 
-                WindowManager wm = ActivityMap.this.getWindowManager();
+        double lat = mCenterLatLng.latitude;
+        double lng = mCenterLatLng.longitude;
+        Log.i("中心点坐标", lat+","+lng);
+
+        WindowManager wm = ActivityMap.this.getWindowManager();
 //      int width = wm.getDefaultDisplay().getWidth();
 //      int height = wm.getDefaultDisplay().getHeight();
 
-                DisplayMetrics outMetrics = new DisplayMetrics();
-                wm.getDefaultDisplay().getMetrics(outMetrics);
-                int width = outMetrics.widthPixels;
-                int height = outMetrics.heightPixels;
+        DisplayMetrics outMetrics = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(outMetrics);
+        int width = outMetrics.widthPixels;
+        int height = outMetrics.heightPixels;
 
-                Log.i("屏幕宽度和高度", width+","+height);
+        Log.i("屏幕宽度和高度", width+","+height);
 
-                Point pt = new Point();
-                pt.x = 0;
-                pt.y = 0;
-                LatLng ll_left = mBaiduMap.getProjection().fromScreenLocation(pt);
-                Log.i("左上角经纬度", ll_left.latitude+","+ll_left.longitude);
+        Point pt = new Point();
+        pt.x = 0;
+        pt.y = 0;
+        LatLng ll_left = mBaiduMap.getProjection().fromScreenLocation(pt);
+        Log.i("左上角经纬度", ll_left.latitude+","+ll_left.longitude);
 
-                Point ptr = new Point();
-                ptr.x = width;
-                ptr.y = height;
-                LatLng ll_right = mBaiduMap.getProjection().fromScreenLocation(ptr);
-                Log.i("右下角经纬度", ll_right.latitude+","+ll_right.longitude);
+        Point ptr = new Point();
+        ptr.x = width;
+        ptr.y = height;
+        LatLng ll_right = mBaiduMap.getProjection().fromScreenLocation(ptr);
+        Log.i("右下角经纬度", ll_right.latitude+","+ll_right.longitude);
 
-                showListSelect.clear();
-                mBaiduMap.clear();
-                for (int j=0;j<showList.size();j++){
-                    //设置屏幕可见范围内添加
-                    if(ll_right.latitude<lat&&lat<ll_left.latitude&&ll_left.longitude<lng&&lng<ll_right.longitude){
-                        showListSelect.add(showList.get(j));
-                        MarkerOptions v = (MarkerOptions) showList.get(j);
+        showListSelect.clear();
+        mBaiduMap.clear();
+        for (int j=0;j<showList.size();j++){
+            //设置屏幕可见范围内添加
+            if(ll_right.latitude<lat&&lat<ll_left.latitude&&ll_left.longitude<lng&&lng<ll_right.longitude){
+                showListSelect.add(showList.get(j));
+                MarkerOptions v = (MarkerOptions) showList.get(j);
 //                        infoWindow(mCenterLatLng.latitude,mCenterLatLng.longitude,v.getExtraInfo());
-                    }
-                }
-                makert(showListSelect);
             }
-        });
+        }
+        makert(showListSelect);
     }
 
     @Override
@@ -266,14 +276,16 @@ public class ActivityMap extends ActivityTitleBase{
         MapStatus mMapStatus = new MapStatus.Builder()
                 //要移动的点
                 .target(cenpt)
-                //放大地图到20倍
-                .zoom(20)
+                //放大地图到12倍
+                .zoom(12)
                 .build();
 //定义MapStatusUpdate对象，以便描述地图状态将要发生的变化
 
         MapStatusUpdate mMapStatusUpdate = MapStatusUpdateFactory.newMapStatus(mMapStatus);
 //改变地图状态
         mBaiduMap.setMapStatus(mMapStatusUpdate);
+
+        updateMap(mMapStatus);
     }
 
     private void initLocation(){
@@ -380,13 +392,16 @@ public class ActivityMap extends ActivityTitleBase{
     private int nowPosition = -1;//当前选择的位置
     private View contentView = null;
     private PopupWindow popupWindow;
+    private boolean isStartVideos = false;
     private void showPopupWindow(final VideoDataBean.child views) {
 
         // 一个自定义的布局，作为显示的内容
         if(contentView == null){
             contentView = LayoutInflater.from(this).inflate(
                     R.layout.item_video_select, null);
-            AutoUtils.auto(contentView);
+            if(!isStartVideos){
+                AutoUtils.auto(contentView);
+            }
         }
         TextView name =(TextView)contentView.findViewById(R.id.name);
         ListView ListView=(ListView)contentView.findViewById(R.id.listview12);
@@ -457,7 +472,11 @@ public class ActivityMap extends ActivityTitleBase{
                     T.showShort(ActivityMap.this,"你还没有选择任何视屏通道");
                     return;
                 }
+                popupWindow.dismiss();
                 if("1".equals(views.getGrandson().get(nowPosition).getIsSelect())){
+
+                    isStartVideo = true;
+                    isStartVideos = true;
                     Bundle bun = new Bundle();
                     bun.putString("channelId",views.getGrandson().get(nowPosition).getChannelId());
                     bun.putString("channelName",views.getGrandson().get(nowPosition).getChannelName());
