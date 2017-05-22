@@ -1,8 +1,12 @@
 package com.android.zhsl.activity;
 
+import android.graphics.Point;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
+import android.support.v4.content.ContextCompat;
+import android.util.DisplayMetrics;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -43,11 +47,10 @@ import com.ltf.mytoolslibrary.viewbase.utils.AutoUtils;
 import com.ltf.mytoolslibrary.viewbase.utils.StartToUrlUtils;
 import com.ltf.mytoolslibrary.viewbase.utils.show.L;
 import com.ltf.mytoolslibrary.viewbase.utils.show.T;
+import com.ltf.mytoolslibrary.viewbase.views.CatLoadingView;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.baidu.location.d.a.i;
 
 /**
  * 作者：李堂飞 on 2017/5/18 13:20
@@ -63,15 +66,22 @@ public class ActivityMap extends ActivityTitleBase{
     public LocationClient mLocationClient = null;
     private TextView dingwei;
     private List<OverlayOptions> showList = new ArrayList<>();//存放地图的图层
+    private List<OverlayOptions> showListSelect = new ArrayList<>();//存放地图的图层
+    private CatLoadingView mShow;
     @Override
     protected void initTitle() {
         setUpTitleCentreText("视屏站点地图");
         setUpTitleBack();
+        setUpTitleRightSearchBtn("定位");
         list = new Gson().fromJson(getIntent().getStringExtra("list"),new TypeToken<List<VideoDataBean.child>>(){}.getType());
 
         //获取地图控件引用
         mMapView = (MapView) findViewById(R.id.bmapView);
         dingwei = (TextView) findViewById(R.id.dingwei);
+
+        if(mShow == null){
+            mShow = new CatLoadingView(this);
+        }
 
         mBaiduMap = mMapView.getMap();
         //卫星地图
@@ -107,12 +117,74 @@ public class ActivityMap extends ActivityTitleBase{
                     if(!showList.contains(option)){
                         showList.add(option);
                     }
-
-                    infoWindow(point.latitude,point.longitude,bun);
                 }
             }
         }
-        makert(showList);
+
+        mBaiduMap.setOnMapStatusChangeListener(new BaiduMap.OnMapStatusChangeListener() {
+            @Override
+            public void onMapStatusChangeStart(MapStatus mapStatus) {
+
+            }
+
+            @Override
+            public void onMapStatusChange(MapStatus mapStatus) {
+
+            }
+
+            @Override
+            public void onMapStatusChangeFinish(MapStatus mapStatus) {
+//                mBaiduMap.clear();
+                LatLng mCenterLatLng = mapStatus.target;
+
+                double lat = mCenterLatLng.latitude;
+                double lng = mCenterLatLng.longitude;
+                Log.i("中心点坐标", lat+","+lng);
+
+                WindowManager wm = ActivityMap.this.getWindowManager();
+//      int width = wm.getDefaultDisplay().getWidth();
+//      int height = wm.getDefaultDisplay().getHeight();
+
+                DisplayMetrics outMetrics = new DisplayMetrics();
+                wm.getDefaultDisplay().getMetrics(outMetrics);
+                int width = outMetrics.widthPixels;
+                int height = outMetrics.heightPixels;
+
+                Log.i("屏幕宽度和高度", width+","+height);
+
+                Point pt = new Point();
+                pt.x = 0;
+                pt.y = 0;
+                LatLng ll_left = mBaiduMap.getProjection().fromScreenLocation(pt);
+                Log.i("左上角经纬度", ll_left.latitude+","+ll_left.longitude);
+
+                Point ptr = new Point();
+                ptr.x = width;
+                ptr.y = height;
+                LatLng ll_right = mBaiduMap.getProjection().fromScreenLocation(ptr);
+                Log.i("右下角经纬度", ll_right.latitude+","+ll_right.longitude);
+
+                showListSelect.clear();
+                mBaiduMap.clear();
+                for (int j=0;j<showList.size();j++){
+                    //设置屏幕可见范围内添加
+                    if(ll_right.latitude<lat&&lat<ll_left.latitude&&ll_left.longitude<lng&&lng<ll_right.longitude){
+                        showListSelect.add(showList.get(j));
+                        MarkerOptions v = (MarkerOptions) showList.get(j);
+//                        infoWindow(mCenterLatLng.latitude,mCenterLatLng.longitude,v.getExtraInfo());
+                    }
+                }
+                makert(showListSelect);
+            }
+        });
+    }
+
+    @Override
+    public void onTitleRightSerchBtnClick() {
+        super.onTitleRightSerchBtnClick();
+        if(mShow != null && !mShow.isShowing()){
+            mShow.shows();
+        }
         mLocationClient.start();
     }
 
@@ -134,9 +206,9 @@ public class ActivityMap extends ActivityTitleBase{
             BDLocation location = (BDLocation) msg.obj;
             message = location.getCity()+location.getStreet()+location.getDistrict();
             dingwei.setText("当前定位地址:"+location.getAddrStr());
-            move(location.getLatitude(),location.getLongitude());
+
             //定义Maker坐标点
-            LatLng point = new LatLng(Double.parseDouble(list.get(i).getLat()), Double.parseDouble(list.get(i).getLng()));
+            LatLng point = new LatLng(location.getLatitude(), location.getLongitude());
 //构建Marker图标
             BitmapDescriptor bitmapd  = BitmapDescriptorFactory
                     .fromResource(R.mipmap.dingwei_center);
@@ -148,14 +220,16 @@ public class ActivityMap extends ActivityTitleBase{
             if(!showList.contains(option)){
                 showList.add(option);
             }
-            mBaiduMap.clear();
-            makert(showList);
-            infoWindow(point.latitude,point.longitude,null);
+
+            move(location.getLatitude(),location.getLongitude());
         }
     };
     public BDLocationListener myListener = new BDLocationListener() {
         @Override
         public void onReceiveLocation(BDLocation location) {
+            if(mShow != null){
+                mShow.dismisss();
+            }
             if (location.getLocType() == BDLocation.TypeGpsLocation) {
                 // GPS定位结果
                 sendMessage(location);
@@ -169,11 +243,14 @@ public class ActivityMap extends ActivityTitleBase{
             }else{
                 T.showShort(getApplicationContext(),"定位失败,错误代码:"+location.getLocType());
             }
+            mLocationClient.stop();
         }
 
         @Override
         public void onConnectHotSpotMessage(String s, int i) {
-
+            if(mShow != null){
+                mShow.dismisss();
+            }
         }
     };
 
@@ -190,7 +267,7 @@ public class ActivityMap extends ActivityTitleBase{
                 //要移动的点
                 .target(cenpt)
                 //放大地图到20倍
-//                .zoom(20)
+                .zoom(20)
                 .build();
 //定义MapStatusUpdate对象，以便描述地图状态将要发生的变化
 
@@ -236,6 +313,11 @@ public class ActivityMap extends ActivityTitleBase{
         //可选，默认false，设置是否需要过滤GPS仿真结果，默认需要
 
         mLocationClient.setLocOption(option);
+
+        mLocationClient.start();
+        if(mShow != null && !mShow.isShowing()){
+            mShow.shows();
+        }
     }
 
     @Override
@@ -285,6 +367,7 @@ public class ActivityMap extends ActivityTitleBase{
             @Override
             public boolean onMarkerClick(Marker marker) {
                 if(marker.getExtraInfo() == null){
+                    infoWindow(marker.getPosition().latitude,marker.getPosition().longitude,null);
                     return false;
                 }
                 VideoDataBean.child  b = (VideoDataBean.child) marker.getExtraInfo().getSerializable("bun");
@@ -295,12 +378,16 @@ public class ActivityMap extends ActivityTitleBase{
     }
 
     private int nowPosition = -1;//当前选择的位置
+    private View contentView = null;
+    private PopupWindow popupWindow;
     private void showPopupWindow(final VideoDataBean.child views) {
 
         // 一个自定义的布局，作为显示的内容
-        View contentView = LayoutInflater.from(this).inflate(
-                R.layout.item_video_select, null);
-        AutoUtils.auto(contentView);
+        if(contentView == null){
+            contentView = LayoutInflater.from(this).inflate(
+                    R.layout.item_video_select, null);
+        }
+        AutoUtils.autoSize(contentView);
         TextView name =(TextView)contentView.findViewById(R.id.name);
         ListView ListView=(ListView)contentView.findViewById(R.id.listview12);
         Button quxiao =(Button)contentView.findViewById(R.id.quxiao);
@@ -343,16 +430,19 @@ public class ActivityMap extends ActivityTitleBase{
 
 //        WindowManager wm = (WindowManager) this
 //                .getSystemService(Context.WINDOW_SERVICE);
-        final PopupWindow popupWindow = new PopupWindow(contentView,
-                WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT,true);
-        popupWindow.setTouchable(true);
-        // 如果不设置PopupWindow的背景，无论是点击外部区域还是Back键都无法dismiss弹框
-        // 我觉得这里是API的一个bug
-        popupWindow.setBackgroundDrawable(getResources().getDrawable(
-                R.mipmap.main_function_bg));
-        popupWindow.setAnimationStyle(R.style.ActionSheetDialogAnimation);
-        popupWindow.showAtLocation(mMapView,
-                Gravity.BOTTOM, 0, 0);
+        if(popupWindow == null){
+            popupWindow = new PopupWindow(contentView,
+                    WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT,true);
+            popupWindow.setTouchable(true);
+            // 如果不设置PopupWindow的背景，无论是点击外部区域还是Back键都无法dismiss弹框
+            // 我觉得这里是API的一个bug
+            popupWindow.setBackgroundDrawable(ContextCompat.getDrawable(this,R.mipmap.main_function_bg));
+            popupWindow.setAnimationStyle(R.style.ActionSheetDialogAnimation);
+        }
+        if(!popupWindow.isShowing()){
+            popupWindow.showAtLocation(mMapView,
+                    Gravity.BOTTOM, 0, 0);
+        }
 
         quxiao.setOnClickListener(new View.OnClickListener() {
             @Override
