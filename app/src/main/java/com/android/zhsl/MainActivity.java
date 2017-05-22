@@ -372,7 +372,7 @@ public class MainActivity extends ActivityTitleBase {
             adapter1 = new GrandsonExpandableListViewAdapter(college);
             view.setAdapter(adapter1);
 
-            view.setPadding(10,0,0,0);
+//            view.setPadding(10,0,0,0);
             view.setOnChildClickListener(new ExpandableListView.OnChildClickListener() {
                 @Override
                 public boolean onChildClick(ExpandableListView expandableListView, View view, int i, int i1, long

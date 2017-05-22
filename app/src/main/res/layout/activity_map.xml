@@ -19,4 +19,11 @@
         android:gravity="center|left"
         android:textColor="@color/white"
         android:textSize="@dimen/y20"/>
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:visibility="gone"
+        layout="@layout/item_video_select"></include>
 </RelativeLayout>
