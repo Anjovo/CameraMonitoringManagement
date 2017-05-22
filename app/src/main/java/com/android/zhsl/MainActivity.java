@@ -340,7 +340,7 @@ public class MainActivity extends ActivityTitleBase {
 //                groupHolder.pic.setLayoutParams(new LinearLayout.LayoutParams(AutoUtils.getDisplayWidthValue(40),AutoUtils.getDisplayHeightValue(40)));
 //                groupHolder.xiala.setLayoutParams(new LinearLayout.LayoutParams(AutoUtils.getDisplayWidthValue(25),AutoUtils.getDisplayHeightValue(25)));
 
-//                AutoUtils.auto(view);
+                AutoUtils.autoSize(groupHolder.name);
 
                 view.setTag(groupHolder);
             }
@@ -530,7 +530,7 @@ public class MainActivity extends ActivityTitleBase {
 //                groupHolder.pic.setLayoutParams(new LinearLayout.LayoutParams(AutoUtils.getDisplayWidthValue(30),AutoUtils.getDisplayHeightValue(30)));
 //                groupHolder.xiala.setLayoutParams(new LinearLayout.LayoutParams(AutoUtils.getDisplayWidthValue(25),AutoUtils.getDisplayHeightValue(25)));
 
-//                AutoUtils.auto(view);
+                AutoUtils.autoSize(groupHolder.name);
 
                 view.setTag(groupHolder);
             }
@@ -561,7 +561,7 @@ public class MainActivity extends ActivityTitleBase {
 //                childholder.pic.setLayoutParams(new LinearLayout.LayoutParams(AutoUtils.getDisplayWidthValue(30),AutoUtils.getDisplayHeightValue(30)));
 //                childholder.xiala.setLayoutParams(new LinearLayout.LayoutParams(AutoUtils.getDisplayWidthValue(25),AutoUtils.getDisplayHeightValue(25)));
 
-//                AutoUtils.auto(view);
+                AutoUtils.autoSize(childholder.name);
 
                 view.setTag(childholder);
             }

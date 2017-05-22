@@ -386,8 +386,8 @@ public class ActivityMap extends ActivityTitleBase{
         if(contentView == null){
             contentView = LayoutInflater.from(this).inflate(
                     R.layout.item_video_select, null);
+            AutoUtils.auto(contentView);
         }
-        AutoUtils.autoSize(contentView);
         TextView name =(TextView)contentView.findViewById(R.id.name);
         ListView ListView=(ListView)contentView.findViewById(R.id.listview12);
         Button quxiao =(Button)contentView.findViewById(R.id.quxiao);
